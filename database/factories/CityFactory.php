@@ -18,7 +18,7 @@ class CityFactory extends Factory
     {
         return [
             //
-            'name'=>$this->faker->city()
+            'name'=>$this->faker->city() // city و بقله اخر اشي نوع البيانات وهي عندي اسماء مدن  name هيك انا بقله اسم العمود الي بدي اعطيه البيانات
         ];
     }
 }

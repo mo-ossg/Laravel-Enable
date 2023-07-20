@@ -14,7 +14,7 @@ class CityController extends Controller
     {
         //
         $data = City::all();
-        return response()->view('cms.cities.index',['cities'=>$data]);
+        return response()->view('cms.cities.index',['cities' => $data]);
     }
 
     /**
@@ -23,9 +23,7 @@ class CityController extends Controller
     public function create()
     {
         //
-        // $data = City::all();
-        // return response()->view('cms.cities.index',['cities'=>$data]);
-
+        return response()->view('cms.cities.create');
     }
 
     /**
@@ -33,7 +31,24 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|min:3|max:45', // هين بتكتب شو الاشياء المطلوبة في الاسم
+        ],[
+            'name.required'=>'Enter city name!',      // من هين بقدر اغير رسالة الخطأ لكل خطأ بدل الافتراضي
+            'name.min'     =>'Please enter at least 3 characters'
+        ]);
+
+        // dd($request->all()); // form هيك انا وصلت للبيانات الي بعتها المستخدم داخل
+
+        $city = new City();
+        // $city->name = $request->get('name');
+        // $city->name = $request->name;
+        $city->name = $request->input('name');
+        $isSaved = $city->save();
+
+        session()->flash('alert-type',$isSaved ? "success" : "danger");
+        session()->flash('message'   ,$isSaved ? "Created Successfully" : "Create failed!");
+        return redirect()->back();
     }
 
     /**
@@ -50,6 +65,7 @@ class CityController extends Controller
     public function edit(City $city)
     {
         //
+        return response()->view('cms.cities.edit',['city' => $city]);
     }
 
     /**
@@ -58,6 +74,20 @@ class CityController extends Controller
     public function update(Request $request, City $city)
     {
         //
+        // dd(request()->all());
+
+        $request->validate([
+            'name' => 'required|string|min:3|max:45'
+        ]);
+
+        $city->name = $request->input('name');
+        $isUpdated = $city->save();
+
+        session()->flash('message',$isUpdated ? "Updated Successfully" : "Update Failed");
+        session()->flash('alert-type',$isUpdated ? "success" : "danger");
+
+        // return redirect()->back();
+        return redirect()->route('cities.index');
     }
 
     /**
@@ -66,5 +96,8 @@ class CityController extends Controller
     public function destroy(City $city)
     {
         //
+        // dd('Delete');
+        $isDeleted = $city->delete();
+        return redirect()->back();
     }
 }

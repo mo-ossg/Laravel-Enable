@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\City;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CitySeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +13,5 @@ class CitySeeder extends Seeder
     public function run(): void
     {
         //
-        City::factory(20)->create(); // create و بعطيه عدد العناصر الي بدي انشأها وبقله model اول اشي بقله اسم
     }
 }

@@ -12,57 +12,69 @@
 @section('content')
 <section class="content">
     <div class="container-fluid">
-      <!-- /.row -->
-      <div class="row">
+    <!-- /.row -->
+    <div class="row">
         <div class="col-12">
-          <div class="card">
+        <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Responsive Hover Table</h3>
+                <h3 class="card-title">Responsive Hover Table</h3>
 
-              <div class="card-tools">
+            <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                  <div class="input-group-append">
+                <div class="input-group-append">
                     <button type="submit" class="btn btn-default">
-                      <i class="fas fa-search"></i>
+                        <i class="fas fa-search"></i>
                     </button>
-                  </div>
                 </div>
-              </div>
+                </div>
+            </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
-              <table class="table table-hover text-nowrap">
+                <table class="table table-hover text-nowrap">
                 <thead>
-                  <tr>
+                <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Created AT</th>
                     <th>Updated At</th>
                     <th>Settings</th>
-                  </tr>
+                </tr>
                 </thead>
                 <tbody>
                     @foreach ($cities as $city)
-                    <tr>
+                        <tr>
                         <td>{{$city->id}}</td>
                         <td>{{$city->name}}</td>
                         <td>{{$city->created_at}}</td>
                         <td>{{$city->updated_at}}</td>
-                        <td>-</td>
-                      </tr>
+                        <td><div class="btn-group">
+                            <a href="{{route('cities.edit',$city->id)}}" class="btn btn-info">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="POST" action="{{route('cities.destroy',$city->id)}}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                            </div>
+                        </td>
+                        </tr>
                     @endforeach
                 </tbody>
-              </table>
+                </table>
             </div>
             <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
         </div>
-      </div>
+        <!-- /.card -->
+        </div>
+    </div>
     </div><!-- /.container-fluid -->
-  </section>
+</section>
 @endsection
 
 @section('scripts')
