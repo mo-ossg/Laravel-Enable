@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
@@ -13,6 +14,8 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $data = Category::all();
+        return response()->view('cms.categories.index',['categories' => $data]);
     }
 
     /**
@@ -21,6 +24,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        return response()->view('cms.categories.create');
     }
 
     /**
@@ -45,6 +49,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
+        return response()->view('cms.categories.edit',['category'=>$category]);
     }
 
     /**
@@ -61,5 +66,10 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $isDeleted = $category->delete();
+        return response()->json([
+            'icon' =>$isDeleted ? 'success' : 'error',
+            'title'=>$isDeleted ? 'Deleted successfully' : 'Delete failed',
+        ], $isDeleted ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 }
