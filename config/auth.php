@@ -37,9 +37,17 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver'   => 'session',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver'   => 'session',
+            'provider' => 'admins',
+        ],
+        'broker' => [
+            'driver'   => 'session',
+            'provider' => 'brokers',
+        ]
     ],
 
     /*
@@ -64,6 +72,19 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'admins' => [
+            'driver' => 'eloquent',             // eloquent يعني المزود driver لو كان
+            'model' => App\Models\Admin::class, // Model بدك تاخد من
+        ],
+        'brokers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Broker::class,
+        ]
+
+        // 'admins' => [
+        //     'driver' => 'database',          // database يعني المزود driver لو كان
+        //     'table' => 'admins',             // Table بدك تاخد من
+        // ]
 
         // 'users' => [
         //     'driver' => 'database',
