@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
+    // public function __construct()
+    // {
+    //     // $this->authorize('viewAny', Category::class);
+    //     $this->authorizeResource(Category::class, 'category');  // على مستوى النظام كامل resources عشان اطبق
+    // }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +40,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        $validator = validator($request->all(),[
+        $validator = Validator($request->all(),[
             'name' => 'required|string|min:3|max:45',
             'description' => 'nullable|string|min:3|max:100',
             'status' => 'required|boolean',
@@ -47,10 +54,10 @@ class CategoryController extends Controller
             $isSaved = $category->save();
             return response()->json([
                 'message' => $isSaved ? 'Created Successfully' : 'Create Failed'
-            ],$isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
+            ], $isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
         } else {
             return response()->json([
-                'message' => $validator->getMessageBag()->first()
+                "message" => $validator->getMessageBag()->first(),
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -105,10 +112,10 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
-        $isDeleted = $category->delete();
+        $isDelete = $category->delete();
         return response()->json([
-            'icon' =>$isDeleted ? 'success' : 'error',
-            'title'=>$isDeleted ? 'Deleted successfully' : 'Delete failed',
-        ], $isDeleted ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            'title'=> $isDelete ? 'Deleted successfully' : 'Deleted Failed',
+            'icon' => $isDelete ? 'success' : 'error',
+        ], $isDelete ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 }

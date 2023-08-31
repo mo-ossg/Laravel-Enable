@@ -221,8 +221,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
             </li>
 
-            @canany(['Read-Admins', 'Create-Admin'])
+            @canany(['Create-Admin', 'Read-Admins', 'Create-Broker', 'Read-Brokers'])
             <li class="nav-header">Human Resources</li>
+            @canany(['Create-Admin', 'Read-Admins'])
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-map-marker-alt"></i>
@@ -250,6 +251,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         @endcan
                     </ul>
                 </li>
+            @endcanany
+
+            @canany(['Create-Broker', 'Read-Brokers'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-map-marker-alt"></i>
+                        <p>
+                        Brokers
+                        <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('Create-Broker')
+                        <li class="nav-item">
+                            <a href="{{route('brokers.create')}}" class="nav-link">
+                                <i class="fas fa-plus-square nav-icon"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('Read-Brokers')
+                        <li class="nav-item">
+                            <a href="{{route('brokers.index')}}" class="nav-link">
+                                <i class="fas fa-th-list nav-icon"></i>
+                                <p>Index</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
             @endcanany
 
             @canany(['Create-Role', 'Read-Roles','Create-Permission', 'Read-Permissions'])

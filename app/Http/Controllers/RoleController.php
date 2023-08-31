@@ -10,6 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Role::class, 'role');
+    // }
+
     /**
      * Display a listing of the resource.
      */
@@ -64,6 +70,7 @@ class RoleController extends Controller
         //
         $permissions = Permission::where('guard_name', $role->guard_name)->get();
         $rolePermissions = $role->permissions;
+
         foreach($permissions as $permission) {
             $permission->setAttribute('assigned', false);
             foreach ($rolePermissions as $rolePermission) {

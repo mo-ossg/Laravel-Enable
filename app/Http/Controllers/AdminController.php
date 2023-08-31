@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
+
+    // public function __construct() {
+    //     $this->authorizeResource(Admin::class, 'admin');
+    // }
+
     /**
      * Display a listing of the resource.
      */
@@ -113,5 +118,10 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         //
+        $isDelete = $admin->delete();
+        return response()->json([
+            'title' => $isDelete ? 'Deleted successfully' : 'Deleted Failed',
+            'icon' => $isDelete ? 'success' : 'error',
+        ], $isDelete ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 }

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BrokerController;
+use App\Http\Controllers\BrokerPermissionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\PermissionController;
@@ -32,11 +34,15 @@ Route::prefix('cms')->middleware('guest:admin,broker')->group(function(){
 });
 
 Route::prefix('cms/admin')->middleware('auth:admin')->group(function() {
-    Route::resource('admins', AdminController::class);;
+    Route::resource('admins', AdminController::class);
+    Route::resource('brokers', BrokerController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 
     Route::put('roles/{role}/permission',[RolePermissionController::class,'update'])->name('role-permission.update');
+
+    Route::get('brokers/{id}/permission',[BrokerPermissionController::class, 'edit'])->name('broker-permissions.edit');
+    Route::put('brokers/{id}/permission',[BrokerPermissionController::class, 'update'])->name('broker-permissions.update');
 });
 
 Route::prefix('cms/admin')->middleware('auth:admin,broker')->group(function(){
