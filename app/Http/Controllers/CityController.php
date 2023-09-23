@@ -9,18 +9,23 @@ use Illuminate\Http\Request;
 class CityController extends Controller
 {
 
-    public function __construct() {
-        $this->authorizeResource(Category::class, 'category');
-    }
+    // public function __construct() {
+    //     $this->authorizeResource(city::class, 'city');
+    // }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $data = City::all();
-        return response()->view('cms.cities.index',['cities' => $data]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => true,  'data' => $data]);
+        } else {
+            return response()->view('cms.cities.index',['cities' => $data]);
+        }
     }
 
     /**

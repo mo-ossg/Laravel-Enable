@@ -23,7 +23,7 @@ class CityPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, City $city): bool
+    public function view(User $user, City $city)
     {
         //
     }
@@ -31,10 +31,11 @@ class CityPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user)
+    public function create($userId)
     {
         //
-        return auth('admin')->check() && auth('admin')->user()->hasPermissionTo('Create-City')
+        $guard = auth('admin')->check() ? 'admin' : 'broker';
+        return auth($guard)->check() && auth($guard)->user()->hasPermissionTo('Create-City')
         ? Response::allow()
         : Response::deny('Access Denied, No Permission');
     }
@@ -42,7 +43,7 @@ class CityPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, City $city): bool
+    public function update(User $user, City $city)
     {
         //
     }
@@ -50,7 +51,7 @@ class CityPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, City $city): bool
+    public function delete(User $user, City $city)
     {
         //
     }
@@ -58,7 +59,7 @@ class CityPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, City $city): bool
+    public function restore(User $user, City $city)
     {
         //
     }
@@ -66,7 +67,7 @@ class CityPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, City $city): bool
+    public function forceDelete(User $user, City $city)
     {
         //
     }

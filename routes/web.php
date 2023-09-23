@@ -9,6 +9,9 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPermissionController;
+use App\Mail\AdminWelcomeEmail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +39,7 @@ Route::prefix('cms')->middleware('guest:admin,broker')->group(function(){
 Route::prefix('cms/admin')->middleware('auth:admin')->group(function() {
     Route::resource('admins', AdminController::class);
     Route::resource('brokers', BrokerController::class);
+    Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 
@@ -43,6 +47,9 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function() {
 
     Route::get('brokers/{id}/permission',[BrokerPermissionController::class, 'edit'])->name('broker-permissions.edit');
     Route::put('brokers/{id}/permission',[BrokerPermissionController::class, 'update'])->name('broker-permissions.update');
+
+    Route::get('users/{id}/permission',[UserPermissionController::class, 'edit'])->name('user-permissions.edit');
+    Route::put('users/{id}/permission',[UserPermissionController::class, 'update'])->name('user-permissions.update');
 });
 
 Route::prefix('cms/admin')->middleware('auth:admin,broker')->group(function(){
@@ -62,6 +69,9 @@ Route::prefix('cms/admin')->middleware('auth:admin,broker')->group(function(){
 });
 
 
+Route::get('email',function() {
+    return new AdminWelcomeEmail();
+});
 
 
 

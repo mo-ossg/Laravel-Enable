@@ -221,7 +221,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
             </li>
 
-            @canany(['Create-Admin', 'Read-Admins', 'Create-Broker', 'Read-Brokers'])
+            @canany(['Create-Admin', 'Read-Admins', 'Create-Broker', 'Read-Brokers', 'Create-User', 'Read-Users'])
             <li class="nav-header">Human Resources</li>
             @canany(['Create-Admin', 'Read-Admins'])
                 <li class="nav-item">
@@ -274,6 +274,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         @can('Read-Brokers')
                         <li class="nav-item">
                             <a href="{{route('brokers.index')}}" class="nav-link">
+                                <i class="fas fa-th-list nav-icon"></i>
+                                <p>Index</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+
+            @canany(['Create-User', 'Read-Users'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-map-marker-alt"></i>
+                        <p>
+                        Users
+                        <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('Create-User')
+                        <li class="nav-item">
+                            <a href="{{route('users.create')}}" class="nav-link">
+                                <i class="fas fa-plus-square nav-icon"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('Read-Users')
+                        <li class="nav-item">
+                            <a href="{{route('users.index')}}" class="nav-link">
                                 <i class="fas fa-th-list nav-icon"></i>
                                 <p>Index</p>
                             </a>
@@ -347,7 +377,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             @endcanany
             @endcanany
 
-            @canany(['Create-City', 'Read-Cities','Create-Category', 'Read-Categories'])
+            @canany(['Read-Cities', 'Create-City', 'Create-Category', 'Read-Categories'])
             <li class="nav-header">Content Management</li>
             @canany(['Create-City', 'Read-Cities'])
             <li class="nav-item">

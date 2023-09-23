@@ -15,8 +15,14 @@ class CategoryPolicy
     public function viewAny($userId)
     {
         //
-        $guard = auth('admin')->check() ? 'admin' : 'broker';
-        return auth($guard)->check() && auth($guard)->user()->hasPermissionTo('Read-Categories')
+        if (auth('admin')->check())
+            $guard = 'admin';
+        else if (auth('broker')->check())
+            $guard = 'broker';
+        else
+            $guard = 'user-api';
+
+        return auth($guard)->user()->hasPermissionTo('Read-Categories')
         ? Response::allow()
         : Response::deny('Access Denied, No Permission');
     }
@@ -35,8 +41,7 @@ class CategoryPolicy
     public function create($userId)
     {
         //
-        $guard = auth('admin')->check() ? 'admin' : 'broker';
-        return auth($guard)->check() && auth($guard)->user()->hasPermissionTo('Create-Category')
+        return auth('admin')->check() && auth('admin')->user()->hasPermissionTo('Create-Category')
         ? Response::allow()
         : Response::deny();
     }

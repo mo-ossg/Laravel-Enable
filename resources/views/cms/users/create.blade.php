@@ -1,8 +1,8 @@
 @extends('cms.parent')
 
-@section('title', 'Create Broker')
-@section('page-big-title', 'Create Broker')
-@section('page-main-title', 'Brokers')
+@section('title', 'Create User')
+@section('page-big-title', 'Create User')
+@section('page-main-title', 'Users')
 @section('page-sub-title', 'Create')
 
 @section('styles')
@@ -21,7 +21,7 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                 <div class="card-header">
-                <h3 class="card-title">Create Broker</h3>
+                <h3 class="card-title">Create User</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -35,6 +35,10 @@
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile">Mobile</label>
+                            <input type="text" class="form-control" id="mobile" placeholder="Enter mobile">
                         </div>
                     </div>
                     <div class="card-footer">
@@ -64,9 +68,10 @@
     })
 
     function roles() {
-        axios.post('/cms/admin/brokers', {
+        axios.post('/cms/admin/users', {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
+            mobile: document.getElementById('mobile').value,
         }).then(function (response) {
             // handle success
             console.log(response);

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Broker;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class BrokerPolicy
 {
@@ -23,7 +24,7 @@ class BrokerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Broker $broker): bool
+    public function view(User $user, Broker $broker)
     {
         //
     }
@@ -42,23 +43,29 @@ class BrokerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Broker $broker): bool
+    public function update(User $user, Broker $broker)
     {
         //
+        return auth('admin')->check() && auth('admin')->user()->hasPermissionTo('Update-Broker')
+        ? Response::allow()
+        : Response::deny('Access Denied, No Permission');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Broker $broker): bool
+    public function delete(User $user, Broker $broker)
     {
         //
+        return auth('admin')->check() && auth('admin')->user()->hasPermissionTo('Delete-Broker')
+        ? Response::allow()
+        : Response::deny('Access Denied, No Permission');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Broker $broker): bool
+    public function restore(User $user, Broker $broker)
     {
         //
     }
@@ -66,7 +73,7 @@ class BrokerPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Broker $broker): bool
+    public function forceDelete(User $user, Broker $broker)
     {
         //
     }

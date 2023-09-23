@@ -14,8 +14,7 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         //
-        // *********** ADMIN *********** //
-
+        // **************** ADMIN **************** //
         Permission::create(['name' => 'Create-Role', 'guard_name' => 'admin']);
         Permission::create(['name' => 'Read-Roles' , 'guard_name' => 'admin']);
         Permission::create(['name' => 'Update-Role', 'guard_name' => 'admin']);
@@ -46,10 +45,18 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'Update-Broker', 'guard_name' => 'admin']);
         Permission::create(['name' => 'Delete-Broker', 'guard_name' => 'admin']);
 
-        // *********** BROKER *********** //
+        Permission::create(['name' => 'Create-User', 'guard_name' => 'admin']);
+        Permission::create(['name' => 'Read-Users' , 'guard_name' => 'admin']);
+        Permission::create(['name' => 'Update-User', 'guard_name' => 'admin']);
+        Permission::create(['name' => 'Delete-User', 'guard_name' => 'admin']);
 
+        // **************** BROKER **************** //
         Permission::create(['name' => 'Read-Cities', 'guard_name' => 'broker']);
         Permission::create(['name' => 'Read-Categories', 'guard_name' => 'broker']);
+
+        // **************** USER **************** //
+        Permission::create(['name' => 'Read-Cities', 'guard_name' => 'user-api']);
+        Permission::create(['name' => 'Read-Categories', 'guard_name' => 'user-api']);
 
     }
 }

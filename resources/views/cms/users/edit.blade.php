@@ -1,9 +1,9 @@
 @extends('cms.parent')
 
-@section('title', 'Create Broker')
-@section('page-big-title', 'Create Broker')
+@section('title', 'Edit Broker')
+@section('page-big-title', 'Edit Broker')
 @section('page-main-title', 'Brokers')
-@section('page-sub-title', 'Create')
+@section('page-sub-title', 'Edit')
 
 @section('styles')
 {{-- Select2 --}}
@@ -21,7 +21,7 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                 <div class="card-header">
-                <h3 class="card-title">Create Broker</h3>
+                <h3 class="card-title">Edit Broker</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -29,16 +29,22 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
+                            <label>Brokers</label>
+                        </div>
+                        <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter name">
+                            <input type="text" class="form-control" id="name" value="{{$broker->name}}"
+                            placeholder="Enter name">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                            <input type="email" class="form-control" id="email" value="{{$broker->email}}"
+                            placeholder="Enter email">
                         </div>
                     </div>
                     <div class="card-footer">
-                    <button type="button" onclick="roles()" class="btn btn-primary">Submit</button>
+                    <button type="button" onclick="update('{{$broker->id}}')"
+                        class="btn btn-primary">Submit</button>
                     </div>
                 </form>
                 </div>
@@ -63,23 +69,20 @@
         theme: 'bootstrap4'
     })
 
-    function roles() {
-        axios.post('/cms/admin/brokers', {
+    function update(id) {
+        axios.put('/cms/admin/brokers/'+id, {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
         }).then(function (response) {
             // handle success
             console.log(response);
-            document.getElementById('create-form').reset();
             toastr.success(response.data.message);
-        })
-        .catch(function (error) {
+        }).catch(function (error) {
             // handle error
             console.log(error);
             toastr.error(error.response.data.message);
         });
     }
-
 
 </script>
 

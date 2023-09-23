@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 class BrokerController extends Controller
 {
 
-    public function __construct() {
-        $this->authorizeResource(Broker::class, 'broker');
-    }
+    // public function __construct() {
+    // $this->authorizeResource(Broker::class, 'broker');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -83,7 +83,7 @@ class BrokerController extends Controller
     {
         //
         $validator = Validator($request->all(), [
-            'email' => 'required|string|email|unique:admins,email',
+            'email' => 'required|string|email|unique:brokers,email',
             'name' => 'required|string|min:3|max:45',
         ]);
         if (!$validator->fails()) {

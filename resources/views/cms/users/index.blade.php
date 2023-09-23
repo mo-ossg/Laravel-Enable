@@ -1,9 +1,9 @@
 @extends('cms.parent')
 
-@section('title', '')
-@section('page-big-title', '')
-@section('page-main-title', '')
-@section('page-sub-title', '')
+@section('title', 'User')
+@section('page-big-title', 'Read Users')
+@section('page-main-title', 'Users')
+@section('page-sub-title', 'Read')
 
 @section('styles')
 
@@ -16,7 +16,7 @@
         <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Brokers</h3>
+                <h3 class="card-title">Users</h3>
 
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -37,38 +37,40 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Mobile</th>
                     <th>Permissions</th>
                     <th>Created AT</th>
                     <th>Updated At</th>
-                    @canany(['Update-Broker','Delete-Broker'])
+                    @canany(['Update-User','Delete-User'])
                     <th>Settings</th>
                     @endcanany
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($brokers as $broker)
+                    @foreach ($users as $user)
                         <tr>
-                        <td>{{$broker->id}}</td>
-                        <td>{{$broker->name}}</td>
-                        <td>{{$broker->email}}</td>
+                        <td>{{$user->id}}</td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->email}}</td>
+                        <td>{{$user->mobile}}</td>
                         <td>
-                            <a href="{{route('broker-permissions.edit',$broker->id)}}"
-                            class="btn btn-block btn-info">({{$broker->permissions_count}})
+                            <a href="{{route('user-permissions.edit',$user->id)}}"
+                            class="btn btn-block btn-info">({{$user->permissions_count}})
                             Permissions</a>
                         </td>
-                        {{-- <td><span class="badge bg-success">{{$broker->email}}</span></td> --}}
-                        <td>{{$broker->created_at}}</td>
-                        <td>{{$broker->updated_at}}</td>
-                        @canany(['Update-Broker','Delete-Broker'])
+                        {{-- <td><span class="badge bg-success">{{$user->email}}</span></td> --}}
+                        <td>{{$user->created_at}}</td>
+                        <td>{{$user->updated_at}}</td>
+                        @canany(['Update-User','Delete-User'])
                         <td>
                             <div class="btn-group">
-                            @can('Update-Broker')
-                            <a href="{{route('brokers.edit',$broker->id)}}" class="btn btn-info">
+                            @can('Update-User')
+                            <a href="{{route('users.edit',$user->id)}}" class="btn btn-info">
                                 <i class="fas fa-edit"></i>
                             </a>
                             @endcan
-                            @can('Delete-Broker')
-                            <a href="#" onclick="confirmDestroy('{{$broker->id}}',this)" class="btn btn-danger">
+                            @can('Delete-User')
+                            <a href="#" onclick="confirmDestroy('{{$user->id}}',this)" class="btn btn-danger">
                                 <i class="fas fa-trash"></i>
                             </a>
                             @endcan
@@ -107,7 +109,7 @@
 
     function destroy(id, ref) {
         //JS - Axios
-        axios.delete('/cms/admin/brokers/'+id+'permission')
+        axios.delete('/cms/admin/users/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response);

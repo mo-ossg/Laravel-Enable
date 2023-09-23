@@ -9,20 +9,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
-    // public function __construct()
-    // {
-    //     // $this->authorize('viewAny', Category::class);
-    //     $this->authorizeResource(Category::class, 'category');  // على مستوى النظام كامل resources عشان اطبق
-    // }
+    public function __construct()
+    {
+        $this->authorizeResource(Category::class, 'category');  // على مستوى النظام كامل resources عشان اطبق
+    }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        // $this->authorize('viewAny', Category::class);
         $data = Category::all();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+            ]);
+        } else {
         return response()->view('cms.categories.index',['categories' => $data]);
+        }
     }
 
     /**

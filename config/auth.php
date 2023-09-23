@@ -47,6 +47,14 @@ return [
         'broker' => [
             'driver'   => 'session',
             'provider' => 'brokers',
+        ],
+        'user-api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+        'broker-api' => [
+            'driver' => 'passport',
+            'provider' => 'brokers',
         ]
     ],
 
@@ -79,7 +87,8 @@ return [
         'brokers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Broker::class,
-        ]
+        ],
+
 
         // 'admins' => [
         //     'driver' => 'database',          // database يعني المزود driver لو كان

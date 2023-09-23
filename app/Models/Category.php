@@ -12,4 +12,17 @@ class Category extends Model
     public function getVisibilityAttribute(){
         return $this->status ? 'Visible' :'Hidden' ;
     }
+
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'status',
+        'description',
+    ];
 }
