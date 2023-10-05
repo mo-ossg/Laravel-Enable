@@ -109,13 +109,15 @@ class ApiAuthController extends Controller
 
         // passport لتسجيل الدخول -> باستخدام
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $validator = Validator($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required|email|exists:brokers,email',
             'password' => 'required|string|min:3',
         ]);
 
         if (!$validator->fails()) {
+
             try {
                 $response = Http::asForm()->post('http://127.0.0.1:8001/oauth/token', [
                     'grant_type'    => 'password',
@@ -127,7 +129,7 @@ class ApiAuthController extends Controller
                 ]);
 
                 $user = Broker::where('email', '=', $request->input('email'))->first();
-
+                $decodedResponse = json_decode($response);
                 $user->setAttribute('token', $response->json()['access_token']);
                 $user->setAttribute('token_type',$response->json()['token_type']);
 
@@ -137,7 +139,10 @@ class ApiAuthController extends Controller
                     'object' => $user,
                 ]);
             } catch (\Throwable $th) {
-                return response()->json($response->json(), Response::HTTP_UNAUTHORIZED);
+                return response()->json([
+                    'status'  => false,
+                    'message' => $decodedResponse->message,
+                ], Response::HTTP_BAD_REQUEST);
             }
         } else {
             return response()->json(['message' => $validator->getMessageBag()->first()], Response::HTTP_BAD_REQUEST);
@@ -145,7 +150,8 @@ class ApiAuthController extends Controller
     }
 
 
-    public function userLogin(Request $request) {
+    public function userLogin(Request $request)
+    {
         $validator = Validator($request->all(), [
             'mobile' => 'required|numeric|digits:8',
             'password' => 'required|string|min:3',
@@ -173,7 +179,7 @@ class ApiAuthController extends Controller
                     'object' => $user,
                 ]);
             } catch (\Throwable $th) {
-                return response()->json($response->json(), Response::HTTP_UNAUTHORIZED);
+                return response()->json($response->json(), Response::HTTP_BAD_REQUEST);
             }
         } else {
             return response()->json(['message' => $validator->getMessageBag()->first()], Response::HTTP_BAD_REQUEST);
@@ -182,7 +188,8 @@ class ApiAuthController extends Controller
 
 
     // تسجيل
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $validator = Validator($request->all(),[
             'name' => 'required|string|min:3|max:45',
             'email' => 'required|email|unique:users,email',
@@ -205,7 +212,8 @@ class ApiAuthController extends Controller
     }
 
 
-    public function forgetPassword(Request $request) {
+    public function forgetPassword(Request $request)
+    {
         $validator = Validator($request->all(), [
             'email' => 'required|email|exists:users,email',
         ]);
@@ -228,7 +236,8 @@ class ApiAuthController extends Controller
     }
 
 
-    public function resetPassword(Request $request) {
+    public function resetPassword(Request $request)
+    {
         $validator = validator($request->all(), [
             'email' => 'required|email|exists:users,email',
             'auth_code' => 'required|numeric|digits:4',
@@ -269,15 +278,17 @@ class ApiAuthController extends Controller
 
 
         // جزء من الطريقة 1 لتسجيل الدخول -> ممنوع الدخول من اكثر من جهاز في نفس الوقت
-    private function checkActiveSession($userId) {
+    private function checkActiveSession($userId)
+    {
         return DB::table('oauth_access_tokens')      // بجيب الجدول من خلال اسمو model ولا بدي انشأ model بستخدمها لما ما يكون عندي
         -> where('user_id', '=', $userId)
         -> where('revoked', '=', false)
         -> exists();
     }
 
-        // جزء من الطريقة 2 لتسجيل الدخول -> ممنوع الدخول من اكثر من جهاز في نفس الوقت
-    private function endPreviousSessions($userId) {
+        // جزء من الطريقة 2 لتسجيل الدخول -> انهاء الجلسات السابقة
+    private function endPreviousSessions($userId)
+    {
         return DB::table('oauth_access_tokens')
         -> where('user_id', '=', $userId)
         -> where('name', '=', 'User-API')
@@ -286,8 +297,15 @@ class ApiAuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request){
-        $token = $request->user('user-api')->token();
+    public function logout(Request $request)
+    {
+        $guard = '';
+        if ($request->user('user-api')) {
+            $guard = 'user-api';
+        } elseif ($request->user('broker-api')) {
+            $guard = 'broker-api';
+        }
+        $token = $request->user($guard)->token();
         $revoked = $token->revoke();
         return response()->json([
             'status' => $revoked,

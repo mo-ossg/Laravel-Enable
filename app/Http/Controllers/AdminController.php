@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminWelcomeEmail;
 use App\Models\Admin;
 use Dotenv\Validator;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,7 +58,12 @@ class AdminController extends Controller
             $admin->email = $request->input('email');
             $admin->password = Hash::make(123456);
             $isSaved = $admin->save();
-            if ($isSaved) $admin->assignRole($role);
+            if ($isSaved) {
+                $admin->assignRole($role);
+
+                event(new Registered($admin));
+                // Mail::to($admin)->send(new AdminWelcomeEmail($admin));
+            }
             return response()->json([
                 'message' => $isSaved ? 'Created Successfully' : 'Create Failed'
             ], $isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
@@ -72,6 +80,7 @@ class AdminController extends Controller
     public function show(Admin $admin)
     {
         //
+        dd('admin');
     }
 
     /**

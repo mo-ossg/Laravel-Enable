@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title>AdminLTE 3 | Verify Email</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -22,48 +22,20 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
-            <a href="cms/index2.html" class="h1"><b>Mohammed</b></a>
+            <a href="cms/index2.html" class="h1"><b>Enable</b>CMS</a>
         </div>
     <div class="card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Ypu must verify your email, resend verification link from below</p>
 
         <form>
-            <div class="input-group mb-3">
-            <input type="email" class="form-control" id="email" placeholder="Email">
-            <div class="input-group-append">
-                <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
-                </div>
-            </div>
-            </div>
-            <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password" placeholder="Password">
-            <div class="input-group-append">
-                <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-                </div>
-            </div>
-            </div>
             <div class="row">
-            <div class="col-8">
-                <div class="icheck-primary">
-                <input type="checkbox" id="remember">
-                <label for="remember">
-                    Remember Me
-                </label>
-                </div>
-            </div>
             <!-- /.col -->
-            <div class="col-4">
-                <button type="button" onclick="login()" class="btn btn-primary btn-block">Sign In</button>
+            <div class="col-12">
+                <button type="button" onclick="sendVerificationEmail()" class="btn btn-primary btn-block">Resend</button>
             </div>
             <!-- /.col -->
             </div>
         </form>
-
-    <p class="mb-1">
-        <a href="{{route('password.request')}}">I forgot my password</a>
-    </p>
     </div>
     <!-- /.card-body -->
     </div>
@@ -83,17 +55,12 @@
 <script src="{{asset('cms/plugins/toastr/toastr.min.js')}}"></script>
 
 <script>
-    function login() {
-        axios.post('/cms/login', {
-            email       : document.getElementById('email').value,
-            password    : document.getElementById('password').value,
-            remember_me : document.getElementById('remember').checked,
-            guard       : '{{$guard}}'
-        }).then(function (response) {
+    function sendVerificationEmail() {
+        axios.post('/email/verification-notification')
+        .then(function (response) {
             // handle success
             console.log(response);
-            // toastr.success(response.data.message);
-            window.location.href = '/cms/admin';
+            toastr.success(response.data.message);
         })
         .catch(function (error) {
             // handle error

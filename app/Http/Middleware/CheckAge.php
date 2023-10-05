@@ -18,13 +18,14 @@ class CheckAge
         // Code Check - Before
         // $age = 18;
         if ($age < 18) {
-            abort('403', "AGE $age IS RESTRICTED");
+            return $next($request);
         }
-        return $next($request);
+        abort('403', "AGE $age IS RESTRICTED");
 
 
 
         // $response = $next($request);
         // Code Check - After
+        // return $response;
     }
 }

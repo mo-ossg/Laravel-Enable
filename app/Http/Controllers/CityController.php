@@ -19,8 +19,8 @@ class CityController extends Controller
     public function index(Request $request)
     {
         //
-        $data = City::all();
 
+        $data = City::all();
         if ($request->expectsJson()) {
             return response()->json(['status' => true,  'data' => $data]);
         } else {

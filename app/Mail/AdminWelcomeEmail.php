@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Admin;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,12 +14,15 @@ class AdminWelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public Admin $admin;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(Admin $admin)
     {
         //
+        $this->admin = $admin;
     }
 
     /**
@@ -28,6 +32,8 @@ class AdminWelcomeEmail extends Mailable
     {
         return new Envelope(
             subject: 'Admin Welcome Email',
+            // from:('info@enable.com','name'),
+            cc: ['hr@admin.com'],
         );
     }
 
@@ -38,6 +44,7 @@ class AdminWelcomeEmail extends Mailable
     {
         return new Content(
             markdown: 'emails.admin.welcome-email',
+            // with : ['user'=>$this->user],
         );
     }
 

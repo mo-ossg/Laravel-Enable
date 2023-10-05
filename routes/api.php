@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CityController as ApiCityController;
 use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
@@ -30,11 +31,12 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('cities',[CityController::class, 'index']);
+Route::get('cities',[ApiCityController::class, 'index']);
 
 Route::middleware('auth:user-api')->group(function () {
     Route::get('categories', [CategoryController::class,'index']);
 });
 
-Route::prefix('auth')->middleware('auth:user-api')->group(function() {
+Route::prefix('auth')->middleware('auth:user-api,broker-api')->group(function() {
     Route::get('logout', [ApiAuthController::class,'logout']);
 });
